@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 
-void main() {
-  runApp(MyApp());
-}
+void main() => runApp(MyApp());
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
@@ -29,6 +27,7 @@ class _HomeScreenState extends State<HomeScreen> {
     {"value": "Default task", "isDone": false}
   ];
   String singlevalue = "";
+  TextEditingController taskController = TextEditingController();
 
   addString(content) {
     setState(() {
@@ -40,6 +39,7 @@ class _HomeScreenState extends State<HomeScreen> {
     setState(() {
       if (singlevalue != "") {
         todoList.add({"value": singlevalue, "isDone": false});
+        taskController.clear();
       } else {
         ScaffoldMessenger.of(context).showSnackBar(SnackBar(
             content: Text("Task should not be empty."),
@@ -142,17 +142,20 @@ class _HomeScreenState extends State<HomeScreen> {
                   }),
             ),
             Expanded(
-                flex: 10,
+                flex: 20,
                 child: Row(
                   children: [
                     Expanded(
                       flex: 70,
                       child: Container(
-                        height: 40,
+                        height: 50,
                         child: TextFormField(
                           onChanged: (content) {
                             addString(content);
                           },
+                          maxLines: 1,
+                          scrollPhysics: BouncingScrollPhysics(),
+                          controller: taskController,
                           decoration: InputDecoration(
                               border: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(15),
@@ -177,7 +180,7 @@ class _HomeScreenState extends State<HomeScreen> {
                             addList();
                           },
                           child: Container(
-                              height: 15,
+                              height: 30,
                               width: double.infinity,
                               alignment: Alignment.center,
                               child: Text("Add")),
